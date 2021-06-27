@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String
+}
+model News {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(300)
+  subtitle    String
+  description String
+  Images      Images[]
+
+}
+
+model Slides {
+  id     Int      @id @default(autoincrement())
+  Images Images[]
+}
+
+model Products {
+  Id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(300)
+  subtitle    String
+  price       Int
+  description String
+  Images      Images[]
+}
+
+model Categories {
+  Id            Int    @id @default(autoincrement())
+  title         String
+  name          String @db.VarChar(200)
+  subcategories String @db.VarChar(200)
+}
+
+model Images {
+  Id         Int       @id @default(autoincrement())
+  path       String
+  News       News?     @relation(fields: [newsId], references: [id])
+  newsId     Int?
+  Slides     Slides?   @relation(fields: [slideId], references: [id])
+  slideId    Int?
+  Products   Products? @relation(fields: [productsId], references: [Id])
+  productsId Int?
+}
